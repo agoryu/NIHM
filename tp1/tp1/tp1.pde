@@ -20,7 +20,10 @@ void setup() {
 } 
 
 void draw(){ 
-  background(255); 
+  background(255);
+  color black = color(0); 
+  for (int i = 0 ; i < totalCount ; i++) 
+    set((int) x[i], (int) y[i], black); 
 }
 
 void readData() { 
