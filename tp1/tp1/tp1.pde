@@ -10,32 +10,29 @@ float minAltitude, maxAltitude; //in your readData method
 //declare the variables corresponding to the column ids for x and y 
 int X = 1; 
 int Y = 2; 
-// and the tables in which the city coordinates will be stored 
-float x[]; 
-float y[];
+City country[];
 
 void setup() { 
   size(800,800); 
-  //readData();
+  readData();
 } 
 
 void draw(){ 
   background(255);
-  color black = color(0); 
-  for (int i = 0 ; i < totalCount ; i++) 
-    set((int) x[i], (int) y[i], black); 
+  for (int i = 0 ; i < totalCount - 2; i++) {
+    country[i].drawCity(); 
+  }
 }
 
 void readData() { 
   String[] lines = loadStrings("../villes.tsv"); 
   parseInfo(lines[0]); // read the header line
-  x = new float[totalCount]; 
-  y = new float[totalCount];
+  country = new City[totalCount]; 
   
   for (int i = 2 ; i < totalCount ; ++i) { 
     String[] columns = split(lines[i], TAB); 
-    x[i-2] = float (columns[1]); 
-    y[i-2] = float (columns[2]); 
+    country[i-2] = new City(float(columns[1]), float(columns[2]), 
+    float(columns[5]), float(columns[6])); 
   }
 }
 
@@ -53,4 +50,12 @@ void parseInfo(String line) {
   maxSurface = float(infoPieces[8]); 
   minAltitude = float(infoPieces[9]); 
   maxAltitude = float(infoPieces[10]); 
+}
+
+float mapX(float x) {
+  return map(x, minX, maxX, 0, 800);
+}
+
+float mapY(float y) {
+  return map(y, minY, maxY, 800, 0);
 }
