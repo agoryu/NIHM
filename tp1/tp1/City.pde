@@ -15,8 +15,9 @@ class City {
   }
    void drawCity() {
      color black = color(0);
-     //set((int) mapX(x), (int) mapY(y), black);
-     ellipse((int) mapX(x), (int) mapY(y), density/2, density/2);
+     //fill(255,0,);
+     float air = PI/4*population/1000;
+     ellipse((int) mapX(x), (int) mapY(y), air, air);
    }
    
    public String toString() {
