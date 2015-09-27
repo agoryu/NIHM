@@ -6,6 +6,8 @@ int totalCount; // total number of places
 float minPopulation, maxPopulation; 
 float minSurface, maxSurface; 
 float minAltitude, maxAltitude; //in your readData method 
+int minPopulationToDisplay = 10000;
+City citySelected;
 
 //declare the variables corresponding to the column ids for x and y 
 int X = 1; 
@@ -17,10 +19,45 @@ void setup() {
   readData();
 } 
 
+void mouseMoved() {
+  City c = pick(mouseX, mouseY);
+  if(c!=null) {
+    c.setIsSelected(true);
+  }
+  /*if(citySelected == null) {
+    if(c != null){
+      c.setIsSelected(true);
+      citySelected = c;
+    }
+  } else if(c != citySelected) {
+    citySelected.setIsSelected(false);
+    if(c != null){
+      c.setIsSelected(true);
+      citySelected = c;
+    }
+    println("mouseX = "+mouseX+" | mouseY = "+mouseY+" | city = "+c);   
+  }*/
+   
+}
+
+void  keyPressed() {
+  if(key==CODED) {
+    if(keyCode == UP) {
+      minPopulationToDisplay += 100;
+    } else if(keyCode == DOWN) {
+      minPopulationToDisplay -= 100;
+    }    
+  }
+  redraw();
+}
+
 void draw(){ 
   background(255);
+  fill(color(0));
+  text("Afficher les populations supérieures à "+minPopulationToDisplay, 300, 30);
   for (int i = 0 ; i < totalCount - 2; i++) {
-    country[i].drawCity(); 
+    if(country[i].population >= minPopulationToDisplay)
+      country[i].drawCity(); 
   }
 }
 
@@ -32,7 +69,7 @@ void readData() {
   for (int i = 2 ; i < totalCount ; ++i) { 
     String[] columns = split(lines[i], TAB); 
     country[i-2] = new City(float(columns[1]), float(columns[2]), 
-    float(columns[5]), float(columns[6])); 
+    float(columns[5]), float(columns[6]), columns[4]); 
   }
 }
 
@@ -58,4 +95,12 @@ float mapX(float x) {
 
 float mapY(float y) {
   return map(y, minY, maxY, 800, 0);
+}
+
+City pick(int px, int py) {
+  for (int i = totalCount-3; i >= 0; i--) {
+    if(country[i].contains(px, py))
+      return country[i]; 
+  }
+  return null;
 }
