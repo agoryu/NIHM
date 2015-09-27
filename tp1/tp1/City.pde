@@ -5,6 +5,8 @@ class City {
   float y; 
   float population; 
   float density; 
+  color black = color(0);
+  color red = color(255,0,0);
   // put a drawing function in here and call from main drawing loop } 
 
   public City(float x, float y, float population, float density) {
@@ -14,10 +16,10 @@ class City {
     this.density = density;
   }
    void drawCity() {
-     color black = color(0);
-     //fill(255,0,);
-     float air = PI/4*population/1000;
-     ellipse((int) mapX(x), (int) mapY(y), air, air);
+     //float air = PI/4*population/10000;
+     float popEchelle = population/10000;
+     fill(lerpColor(black, red, density/maxSurface*10));
+     ellipse((int) mapX(x), (int) mapY(y), popEchelle, popEchelle);
    }
    
    public String toString() {
