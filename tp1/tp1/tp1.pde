@@ -21,22 +21,18 @@ void setup() {
 
 void mouseMoved() {
   City c = pick(mouseX, mouseY);
-  if(c!=null) {
+  /*if(c!=null) {
     c.setIsSelected(true);
-  }
-  /*if(citySelected == null) {
-    if(c != null){
-      c.setIsSelected(true);
-      citySelected = c;
-    }
-  } else if(c != citySelected) {
-    citySelected.setIsSelected(false);
+  }*/
+  if(c != citySelected) {
+    if(citySelected != null)
+      citySelected.setIsSelected(false);
     if(c != null){
       c.setIsSelected(true);
       citySelected = c;
     }
     println("mouseX = "+mouseX+" | mouseY = "+mouseY+" | city = "+c);   
-  }*/
+  }
    
 }
 
@@ -99,8 +95,9 @@ float mapY(float y) {
 
 City pick(int px, int py) {
   for (int i = totalCount-3; i >= 0; i--) {
-    if(country[i].contains(px, py))
+    if(country[i].contains(px, py)){
       return country[i]; 
+    }
   }
   return null;
 }

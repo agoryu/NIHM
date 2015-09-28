@@ -24,10 +24,12 @@ class City {
      float popEchelle = population/10000;
      if(this.isSelected == true) {
        strokeWeight(5);
-       stroke(0,0,255);
+       stroke(black);
+       text(name, (int)(mapX(x)+popEchelle/2+5), (int)(mapY(y)+5)); 
      }
      fill(lerpColor(black, red, density/maxSurface*10));
      ellipse((int) mapX(x), (int) mapY(y)+50, popEchelle, popEchelle);
+     noStroke();
    }
    
    public boolean contains(int px, int py) {
