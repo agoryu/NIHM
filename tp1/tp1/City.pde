@@ -23,9 +23,11 @@ class City {
      //float air = PI/4*population/10000;
      float popEchelle = population/10000;
      if(this.isSelected == true) {
+       rect((int)(mapX(x)+popEchelle/2+5), (int)(mapY(y)+5), 
+       name.length()*10, 30);
+       text(name, (int)(mapX(x)+popEchelle/2+5), (int)(mapY(y)+5));
        strokeWeight(5);
-       stroke(black);
-       text(name, (int)(mapX(x)+popEchelle/2+5), (int)(mapY(y)+5)); 
+       stroke(black); 
      }
      fill(lerpColor(black, red, density/maxSurface*10));
      ellipse((int) mapX(x), (int) mapY(y)+50, popEchelle, popEchelle);
