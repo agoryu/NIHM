@@ -7,7 +7,9 @@ class City {
   float density; 
   color black = color(0);
   color red = color(255,0,0);
+  color blue = color(0,0,255);
   boolean isSelected;
+  boolean isClic;
   // put a drawing function in here and call from main drawing loop } 
 
   public City(float x, float y, float population, float density, String name) {
@@ -17,21 +19,27 @@ class City {
     this.density = density;
     this.name = name;
     this.isSelected = false;
+    this.isClic = false;
   }
   
    public void drawCity() {
-     //float air = PI/4*population/10000;
+     //float popEchelle = population/100/PI;
      float popEchelle = population/10000;
+     noStroke();
+     noFill();
      if(this.isSelected == true) {
-       rect((int)(mapX(x)+popEchelle/2+5), (int)(mapY(y)+5), 
-       name.length()*10, 30);
-       text(name, (int)(mapX(x)+popEchelle/2+5), (int)(mapY(y)+5));
        strokeWeight(5);
        stroke(black); 
+       rect((int)(mapX(x)+popEchelle/2+5), (int)(mapY(y)+5), 
+       textWidth(name+"   "), 20);
+       if(isClic)
+         fill(blue);
+       else
+         fill(black);
+       text(name, (int)(mapX(x)+popEchelle/2+9), (int)(mapY(y)+20));
      }
      fill(lerpColor(black, red, density/maxSurface*10));
      ellipse((int) mapX(x), (int) mapY(y)+50, popEchelle, popEchelle);
-     noStroke();
    }
    
    public boolean contains(int px, int py) {
@@ -46,5 +54,9 @@ class City {
    
    public void setIsSelected(boolean b) {
      this.isSelected = b;
+   }
+   
+   public void isClic(boolean b) {
+     this.isClic = b;
    }
 }

@@ -14,10 +14,25 @@ int X = 1;
 int Y = 2; 
 City country[];
 
+Scrollbar sc;
+int posScrollX = 200;
+int posScrollY = 30;
+int SizeScrollX;
+int SizeScrollY = 20;
+
 void setup() { 
-  size(800,800); 
+  size(800,800);
   readData();
+  SizeScrollX = (int)(2*maxPopulation/10000);
+  sc = new Scrollbar(posScrollX, posScrollY, SizeScrollX, SizeScrollY, 1);
 } 
+
+void mousePressed() {
+  City c = pick(mouseX, mouseY);
+  if(c != null) {
+    c.isClic(true);
+  }
+}
 
 void mouseMoved() {
   City c = pick(mouseX, mouseY);
@@ -31,7 +46,7 @@ void mouseMoved() {
       c.setIsSelected(true);
       citySelected = c;
     }
-    println("mouseX = "+mouseX+" | mouseY = "+mouseY+" | city = "+c);   
+    //println("mouseX = "+mouseX+" | mouseY = "+mouseY+" | city = "+c);   
   }
    
 }
@@ -50,9 +65,14 @@ void  keyPressed() {
 void draw(){ 
   background(255);
   fill(color(0));
-  text("Afficher les populations supérieures à "+minPopulationToDisplay, 300, 30);
+  text("Afficher les populations supérieures à", posScrollX, posScrollY-30);
+  text("0", posScrollX, posScrollY-15);
+  text(maxPopulation, posScrollX+SizeScrollX-20, posScrollY-15);
+  sc.update();
+  sc.display();
+  
   for (int i = 0 ; i < totalCount - 2; i++) {
-    if(country[i].population >= minPopulationToDisplay)
+    if(country[i].population >= 10000 * (sc.getPos()/400))
       country[i].drawCity(); 
   }
 }
