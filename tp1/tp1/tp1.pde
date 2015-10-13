@@ -63,16 +63,20 @@ void  keyPressed() {
 }
 
 void draw(){ 
+  
+  int limite = (int)(10000 * ((sc.getPos() - posScrollX) / SizeScrollX));
+  
   background(255);
   fill(color(0));
-  text("Afficher les populations supérieures à", posScrollX, posScrollY-30);
-  text("0", posScrollX, posScrollY-15);
-  text(maxPopulation, posScrollX+SizeScrollX-20, posScrollY-15);
+  //text("Afficher les populations supérieures à", posScrollX, posScrollY-30);
+  text("0", posScrollX-15, posScrollY);
+  text("10000", posScrollX+SizeScrollX+20, posScrollY);
+  text(limite, sc.getPos(), posScrollY-15);
   sc.update();
   sc.display();
   
   for (int i = 0 ; i < totalCount - 2; i++) {
-    if(country[i].population >= 10000 * (sc.getPos()/400))
+    if(country[i].population >= limite)
       country[i].drawCity(); 
   }
 }
