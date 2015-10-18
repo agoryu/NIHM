@@ -15,13 +15,13 @@ int Y = 2;
 City country[];
 
 Scrollbar sc;
-int posScrollX = 200;
-int posScrollY = 30;
+int posScrollX = 900;
+int posScrollY = 60;
 int SizeScrollX;
 int SizeScrollY = 20;
 
 void setup() { 
-  size(800,800);
+  size(1400,800);
   readData();
   SizeScrollX = (int)(2*maxPopulation/10000);
   sc = new Scrollbar(posScrollX, posScrollY, SizeScrollX, SizeScrollY, 1);
@@ -36,9 +36,7 @@ void mousePressed() {
 
 void mouseMoved() {
   City c = pick(mouseX, mouseY);
-  /*if(c!=null) {
-    c.setIsSelected(true);
-  }*/
+
   if(c != citySelected) {
     if(citySelected != null)
       citySelected.setIsSelected(false);
@@ -46,7 +44,7 @@ void mouseMoved() {
       c.setIsSelected(true);
       citySelected = c;
     }
-    //println("mouseX = "+mouseX+" | mouseY = "+mouseY+" | city = "+c);   
+    
   }
    
 }
@@ -68,12 +66,27 @@ void draw(){
   
   background(255);
   fill(color(0));
-  //text("Afficher les populations supérieures à", posScrollX, posScrollY-30);
+  
+  //affichage du slider
+  text("Afficher les populations supérieures à", posScrollX+100, posScrollY-30);
   text("0", posScrollX-15, posScrollY);
   text("10000", posScrollX+SizeScrollX+20, posScrollY);
   text(limite, sc.getPos(), posScrollY-15);
   sc.update();
   sc.display();
+  
+  //affichage de la legende de couleur
+  color red = color(255,0,0);
+  color yellow = color(255,255,0);
+  fill(color(0));
+  text("Densité de population", posScrollX, posScrollY+80);
+  setGradient(posScrollX, posScrollY+100, 450, 40, yellow, red, 2);
+  
+  //affichage de la legende de la taille des cercles
+  fill(color(0));
+  noStroke();
+  text("Nombre d'habitant", posScrollX, posScrollY+180);
+  ellipse(posScrollX+50, (int) posScrollY+200, 20, 20);
   
   for (int i = 0 ; i < totalCount - 2; i++) {
     if(country[i].population >= limite)
@@ -83,13 +96,23 @@ void draw(){
 
 void readData() { 
   String[] lines = loadStrings("../villes.tsv"); 
-  parseInfo(lines[0]); // read the header line
-  country = new City[totalCount]; 
+  parseInfo(lines[0]); 
+  country = new City[totalCount];
+ 
+ int maxDensity = 0;
   
   for (int i = 2 ; i < totalCount ; ++i) { 
     String[] columns = split(lines[i], TAB); 
     country[i-2] = new City(float(columns[1]), float(columns[2]), 
-    float(columns[5]), float(columns[6]), columns[4]); 
+    float(columns[5]), float(columns[6]), columns[4], maxPopulation);
+   
+    if(country[i-2].getDensity() > maxDensity) {
+      maxDensity = int(country[i-2].getDensity());
+    } 
+  }
+  
+  for(int i=0; i<totalCount-2; i++) {
+    country[i].setMaxDensity(maxDensity);
   }
 }
 
@@ -124,4 +147,26 @@ City pick(int px, int py) {
     }
   }
   return null;
+}
+
+void setGradient(int x, int y, float w, float h, color c1, color c2, int axis ) {
+
+  noFill();
+
+  if (axis == 1) {  // Top to bottom gradient
+    for (int i = y; i <= y+h; i++) {
+      float inter = map(i, y, y+h, 0, 1);
+      color c = lerpColor(c1, c2, inter);
+      stroke(c);
+      line(x, i, x+w, i);
+    }
+  }  
+  else if (axis == 2) {  // Left to right gradient
+    for (int i = x; i <= x+w; i++) {
+      float inter = map(i, x, x+w, 0, 1);
+      color c = lerpColor(c1, c2, inter);
+      stroke(c);
+      line(i, y, i, y+h);
+    }
+  }
 }
