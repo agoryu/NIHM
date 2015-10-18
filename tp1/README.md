@@ -23,5 +23,5 @@ J'ai réalisé l'ensemble du TP jusque la première étape optionnel (je n'ai pa
 * Le déplacement du curseur sur le slider ajoute/retire des villes en fonction du nombre d'habitant. Le slider jusque 10 000 et a un intervalle de 100
 
 ## Sources
-[slider](https://processing.org/examples/scrollbar.html)
-[dégradé de la légende](https://processing.org/examples/lineargradient.html)
+* [slider](https://processing.org/examples/scrollbar.html)
+* [dégradé de la légende](https://processing.org/examples/lineargradient.html)
