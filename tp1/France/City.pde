@@ -39,12 +39,14 @@ class City {
     this.isSelected = false;
     this.isClic = false;
     
-    popEchelle = log(population)*2;
+    //popEchelle = log(population)*2;
+    popEchelle = sqrt(this.population * 100 / maxPopulation) * 10;
    
   }
   
-   public void drawCity() {
+   public void drawCity(int echelle) {
 
+     float sizeCity = popEchelle * echelle;
      noStroke();
      noFill();
      
@@ -53,7 +55,7 @@ class City {
        //creation du rectangle contenant le nom de la ville
        strokeWeight(5);
        stroke(black); 
-       rect((int)(mapX(x)+popEchelle/2+5), (int)(mapY(y)+5), 
+       rect((int)(mapX(x)+sizeCity/2+5), (int)(mapY(y)+5), 
        textWidth(name+"   "), 20);
        
        //gestion du changement de couleur du nom de la ville
@@ -63,12 +65,12 @@ class City {
          fill(black);
        
        //affichage du nom de la ville  
-       text(name, (int)(mapX(x)+popEchelle/2+9), (int)(mapY(y)+20));
+       text(name, (int)(mapX(x)+sizeCity/2+9), (int)(mapY(y)+20));
      }
      
      //affichage du cercle
      fill(lerpColor(yellow, red, (density/maxDensity) * 255));
-     ellipse((int) mapX(x), (int) mapY(y)+yGap, popEchelle, popEchelle);
+     ellipse((int) mapX(x), (int) mapY(y)+yGap, sizeCity, sizeCity);
    }
    
    public boolean contains(int px, int py) {
@@ -77,7 +79,6 @@ class City {
    }
    
    public String toString() {
-     //return "x:"+x+" y:"+y;
      return name;
    }
    

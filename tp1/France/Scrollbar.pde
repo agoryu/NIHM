@@ -9,12 +9,19 @@ class Scrollbar {
   float ratio;
 
   Scrollbar (float xp, float yp, int sw, int sh, int l) {
+    //taille graphique
     swidth = sw;
     sheight = sh;
+    
+    //interval
     int widthtoheight = sw - sh;
     ratio = (float)sw / (float)widthtoheight;
+    
+    //position graphique
     xpos = xp;
     ypos = yp-sheight/2;
+    
+    //position graphique du curseur
     spos = xpos + swidth/2 - sheight/2;
     newspos = spos;
     sposMin = xpos;
@@ -36,6 +43,26 @@ class Scrollbar {
     }
     if (locked) {
       newspos = constrain(mouseX-sheight/2, sposMin, sposMax);
+      float interval = sposMax - sposMin;
+      float tmpPos = newspos - sposMin;
+      if(tmpPos < interval) {
+        if(tmpPos < 3*interval/4) {
+          if(tmpPos < interval/2) {
+            if(tmpPos < interval/4) {
+              tmpPos = 0;
+            } else {
+              tmpPos = interval/4;
+            }
+          } else {
+            tmpPos = interval/2;
+          }
+        } else {
+          tmpPos = 3*interval/4;
+        }
+      } else {
+        tmpPos = interval;
+      }
+      newspos = tmpPos + sposMin;
     }
     if (abs(newspos - spos) > 1) {
       spos = spos + (newspos-spos)/loose;

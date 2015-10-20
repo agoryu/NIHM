@@ -20,8 +20,10 @@ int posScrollY = 60;
 int SizeScrollX;
 int SizeScrollY = 20;
 
+int echelle = 1;
+
 void setup() { 
-  size(1400,800);
+  size(1400,900);
   readData();
   SizeScrollX = (int)(2*maxPopulation/10000);
   sc = new Scrollbar(posScrollX, posScrollY, SizeScrollX, SizeScrollY, 1);
@@ -60,6 +62,17 @@ void  keyPressed() {
   redraw();
 }
 
+void mouseWheel(MouseEvent event) {
+  float e = event.getCount();
+  if(e == -1) {
+    echelle += 1.0;
+  } else {
+    if(echelle >= 1) {
+      echelle -= 1.0;
+    }
+  }
+}
+
 void draw(){ 
   
   int limite = (int)(10000 * ((sc.getPos() - posScrollX) / SizeScrollX));
@@ -90,12 +103,12 @@ void draw(){
   
   for (int i = 0 ; i < totalCount - 2; i++) {
     if(country[i].population >= limite)
-      country[i].drawCity(); 
+      country[i].drawCity(echelle); 
   }
 }
 
 void readData() { 
-  String[] lines = loadStrings("../villes.tsv"); 
+  String[] lines = loadStrings("villes.tsv"); 
   parseInfo(lines[0]); 
   country = new City[totalCount];
  
