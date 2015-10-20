@@ -21,6 +21,8 @@ int SizeScrollX;
 int SizeScrollY = 20;
 
 int echelle = 1;
+float posZoomX = 0;
+float posZoomY = 0;
 
 void setup() { 
   size(1400,900);
@@ -102,9 +104,9 @@ void draw(){
   ellipse(posScrollX+50, (int) posScrollY+200, 20, 20);
   
   for (int i = 0 ; i < totalCount - 2; i++) {
-    println(country[i].x);
-    if(country[i].population >= limite && country[i].x < 800)
-      country[i].drawCity(echelle); 
+    float posX = country[i].getX()*echelle + (posZoomX*echelle - country[i].getX()*echelle);
+    if(country[i].population >= limite && posX < 800)
+      country[i].drawCity(echelle, posZoomX, posZoomY); 
   }
   
   //ellipse(900, 100, 50, 50);

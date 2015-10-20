@@ -44,9 +44,11 @@ class City {
    
   }
   
-   public void drawCity(int echelle) {
+   public void drawCity(int echelle, float posZoomX, float posZoomY) {
 
      float sizeCity = popEchelle * echelle;
+     float posX = mapX(this.x)*echelle + (posZoomX*echelle - mapX(this.x)*echelle);
+     float posY = mapY(this.y)*echelle + (posZoomX*echelle - mapY(this.y)*echelle);
      noStroke();
      noFill();
      
@@ -80,6 +82,10 @@ class City {
    
    public String toString() {
      return name;
+   }
+   
+   public float getX() {
+     return mapX(this.x);
    }
    
    public void setIsSelected(boolean b) {
