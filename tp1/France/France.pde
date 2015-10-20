@@ -102,9 +102,12 @@ void draw(){
   ellipse(posScrollX+50, (int) posScrollY+200, 20, 20);
   
   for (int i = 0 ; i < totalCount - 2; i++) {
-    if(country[i].population >= limite)
+    println(country[i].x);
+    if(country[i].population >= limite && country[i].x < 800)
       country[i].drawCity(echelle); 
   }
+  
+  //ellipse(900, 100, 50, 50);
 }
 
 void readData() { 
@@ -155,7 +158,7 @@ float mapY(float y) {
 
 City pick(int px, int py) {
   for (int i = totalCount-3; i >= 0; i--) {
-    if(country[i].contains(px, py)){
+    if(country[i].contains(px, py, echelle)){
       return country[i]; 
     }
   }

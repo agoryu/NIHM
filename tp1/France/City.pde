@@ -55,7 +55,7 @@ class City {
        //creation du rectangle contenant le nom de la ville
        strokeWeight(5);
        stroke(black); 
-       rect((int)(mapX(x)+sizeCity/2+5), (int)(mapY(y)+5), 
+       rect((int)((mapX(x)+sizeCity/2)*echelle)+5, (int)(mapY(y)*echelle)+5, 
        textWidth(name+"   "), 20);
        
        //gestion du changement de couleur du nom de la ville
@@ -65,17 +65,17 @@ class City {
          fill(black);
        
        //affichage du nom de la ville  
-       text(name, (int)(mapX(x)+sizeCity/2+9), (int)(mapY(y)+20));
+       text(name, (int)((mapX(x)+sizeCity/2)*echelle)+9, (int)(mapY(y)*echelle)+20);
      }
      
      //affichage du cercle
      fill(lerpColor(yellow, red, (density/maxDensity) * 255));
-     ellipse((int) mapX(x), (int) mapY(y)+yGap, sizeCity, sizeCity);
+     ellipse((int) mapX(x)*echelle, (int) (mapY(y)+yGap)*echelle, sizeCity, sizeCity);
    }
    
-   public boolean contains(int px, int py) {
+   public boolean contains(int px, int py, int echelle) {
      float radius = popEchelle/2;
-     return dist((int)mapX(x), (int)mapY(y)+yGap, px, py) <= radius + 1;  
+     return dist((int)mapX(x)*echelle, (int)(mapY(y)+yGap)*echelle, px, py) <= radius + 1;  
    }
    
    public String toString() {
