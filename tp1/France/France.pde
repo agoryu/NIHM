@@ -23,6 +23,9 @@ int SizeScrollY = 20;
 int echelle = 1;
 float posZoomX = 0;
 float posZoomY = 0;
+float oldPosZoomX = 0;
+float oldPosZoomY = 0;
+boolean firstClic = true;
 
 void setup() { 
   size(1400,900);
@@ -103,8 +106,18 @@ void draw(){
   text("Nombre d'habitant", posScrollX, posScrollY+180);
   ellipse(posScrollX+50, (int) posScrollY+200, 20, 20);
   
+  if(mousePressed == true) {
+    if(firstClic == true) {
+      oldPosZoomX = mouseX;
+      oldPosZoomY = mouseY;
+      firstClic = false;
+    }
+    posZoomX = mouseX - oldPosZoomX;
+    posZoomY = mouseY - oldPosZoomY; 
+  }
+  
   for (int i = 0 ; i < totalCount - 2; i++) {
-    float posX = country[i].getX()*echelle + (posZoomX*echelle - country[i].getX()*echelle);
+    float posX = country[i].getX()*echelle + posZoomX*echelle;// + (posZoomX*echelle - country[i].getX()*echelle);
     if(country[i].population >= limite && posX < 800)
       country[i].drawCity(echelle, posZoomX, posZoomY); 
   }
@@ -160,7 +173,7 @@ float mapY(float y) {
 
 City pick(int px, int py) {
   for (int i = totalCount-3; i >= 0; i--) {
-    if(country[i].contains(px, py, echelle)){
+    if(country[i].contains(px, py, echelle, (int)posZoomX, (int)posZoomY)){
       return country[i]; 
     }
   }

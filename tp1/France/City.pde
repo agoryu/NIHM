@@ -23,6 +23,8 @@ class City {
   
   float maxDensity;
   float maxPopulation;
+  
+  float echelle;
 
   public City(float x, float y, float population, float surface, String name, float maxPopulation) {
     this.x = x;
@@ -41,14 +43,16 @@ class City {
     
     //popEchelle = log(population)*2;
     popEchelle = sqrt(this.population * 100 / maxPopulation) * 10;
+    
+    this.echelle = 0;
    
   }
   
    public void drawCity(int echelle, float posZoomX, float posZoomY) {
 
      float sizeCity = popEchelle * echelle;
-     float posX = mapX(this.x)*echelle + (posZoomX*echelle - mapX(this.x)*echelle);
-     float posY = mapY(this.y)*echelle + (posZoomX*echelle - mapY(this.y)*echelle);
+     int posX = (int)(mapX(this.x)*echelle + posZoomX * echelle);// + (posZoomX - mapX(this.x)*echelle));
+     int posY = (int)((mapY(this.y)+yGap)*echelle + posZoomY * echelle);// + (posZoomY - mapY(this.y)*echelle));
      noStroke();
      noFill();
      
@@ -67,17 +71,17 @@ class City {
          fill(black);
        
        //affichage du nom de la ville  
-       text(name, (int)((mapX(x)+sizeCity/2)*echelle)+9, (int)(mapY(y)*echelle)+20);
+       text(name, (int)((mapX(x)+sizeCity/2)*echelle)+9 + posZoomX*echelle, (int)(mapY(y)*echelle)+20+posZoomY*echelle);
      }
      
      //affichage du cercle
      fill(lerpColor(yellow, red, (density/maxDensity) * 255));
-     ellipse((int) mapX(x)*echelle, (int) (mapY(y)+yGap)*echelle, sizeCity, sizeCity);
+     ellipse((int) posX, (int) posY, sizeCity, sizeCity);
    }
    
-   public boolean contains(int px, int py, int echelle) {
+   public boolean contains(int px, int py, int echelle, int posZoomX, int posZoomY) {
      float radius = popEchelle/2;
-     return dist((int)mapX(x)*echelle, (int)(mapY(y)+yGap)*echelle, px, py) <= radius + 1;  
+     return dist((int)mapX(x)*echelle + posZoomX*echelle, (int)(mapY(y)+yGap)*echelle + posZoomY * echelle, px, py) <= radius + 1;  
    }
    
    public String toString() {
@@ -86,6 +90,10 @@ class City {
    
    public float getX() {
      return mapX(this.x);
+   }
+   
+   public float getY() {
+     return mapY(this.y);
    }
    
    public void setIsSelected(boolean b) {
