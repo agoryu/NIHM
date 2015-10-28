@@ -98,15 +98,20 @@ void draw(){
   color yellow = color(255,255,0);
   fill(color(0));
   text("Densité de population", posScrollX, posScrollY+80);
+  text("min", posScrollX-20, posScrollY+96);
+  text("max", posScrollX+450, posScrollY+96);
   setGradient(posScrollX, posScrollY+100, 450, 40, yellow, red, 2);
   
   //affichage de la legende de la taille des cercles
-  fill(color(0));
-  noStroke();
   text("Nombre d'habitant", posScrollX, posScrollY+180);
-  ellipse(posScrollX+50, (int) posScrollY+200, 20, 20);
+  fill(color(255));
+  stroke(0);
+  ellipse(posScrollX+50, (int) posScrollY+250, 20, 20);
+  ellipse(posScrollX+150, (int) posScrollY+250, 30, 30);
+  ellipse(posScrollX+250, (int) posScrollY+250, 40, 40);
   
-  if(mousePressed == true) {
+  //gestion du zoom
+  if(mousePressed == true && mouseX < 800) {
     if(firstClic == true) {
       oldPosZoomX = mouseX;
       oldPosZoomY = mouseY;
@@ -114,15 +119,17 @@ void draw(){
     }
     posZoomX = mouseX - oldPosZoomX;
     posZoomY = mouseY - oldPosZoomY; 
+  } else {
+    oldPosZoomX = mouseX - posZoomX;
+    oldPosZoomY = mouseY - posZoomY;
   }
   
   for (int i = 0 ; i < totalCount - 2; i++) {
-    float posX = country[i].getX()*echelle + posZoomX*echelle;// + (posZoomX*echelle - country[i].getX()*echelle);
+    float posX = country[i].getX()*echelle + posZoomX*echelle;
     if(country[i].population >= limite && posX < 800)
       country[i].drawCity(echelle, posZoomX, posZoomY); 
   }
   
-  //ellipse(900, 100, 50, 50);
 }
 
 void readData() { 

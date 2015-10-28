@@ -7,6 +7,8 @@ class Scrollbar {
   boolean over;           // is the mouse over the slider?
   boolean locked;
   float ratio;
+  
+  float spos2, newspos2;    // x position of slider 2
 
   Scrollbar (float xp, float yp, int sw, int sh, int l) {
     //taille graphique
@@ -42,7 +44,7 @@ class Scrollbar {
       locked = false;
     }
     if (locked) {
-      newspos = constrain(mouseX-sheight/2, sposMin, sposMax);
+      /*newspos = constrain(mouseX-sheight/2, sposMin, sposMax);
       float interval = sposMax - sposMin;
       float tmpPos = newspos - sposMin;
       if(tmpPos < interval) {
@@ -62,7 +64,8 @@ class Scrollbar {
       } else {
         tmpPos = interval;
       }
-      newspos = tmpPos + sposMin;
+      newspos = tmpPos + sposMin;*/
+      newspos = constrain(mouseX-sheight/2, sposMin, sposMax);
     }
     if (abs(newspos - spos) > 1) {
       spos = spos + (newspos-spos)/loose;
