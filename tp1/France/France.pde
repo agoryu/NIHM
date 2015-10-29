@@ -80,7 +80,8 @@ void mouseWheel(MouseEvent event) {
 
 void draw(){ 
   
-  int limite = (int)(10000 * ((sc.getPos() - posScrollX) / SizeScrollX));
+  int limite = (int)((maxPopulation+20) * ((sc.getPos() - posScrollX) / SizeScrollX));
+  int limite2 = (int)((maxPopulation+20) * ((sc.getPos2() - posScrollX) / SizeScrollX));
   
   background(255);
   fill(color(0));
@@ -88,8 +89,9 @@ void draw(){
   //affichage du slider
   text("Afficher les populations supérieures à", posScrollX+100, posScrollY-30);
   text("0", posScrollX-15, posScrollY);
-  text("10000", posScrollX+SizeScrollX+20, posScrollY);
+  text(maxPopulation, posScrollX+SizeScrollX+20, posScrollY);
   text(limite, sc.getPos(), posScrollY-15);
+  text(limite2, sc.getPos2(), posScrollY-15);
   sc.update();
   sc.display();
   
@@ -126,7 +128,7 @@ void draw(){
   
   for (int i = 0 ; i < totalCount - 2; i++) {
     float posX = country[i].getX()*echelle + posZoomX*echelle;
-    if(country[i].population >= limite && posX < 800)
+    if(country[i].population >= limite && country[i].population <= limite2 && posX < 800)
       country[i].drawCity(echelle, posZoomX, posZoomY); 
   }
   

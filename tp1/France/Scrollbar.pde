@@ -26,49 +26,27 @@ class Scrollbar {
     //position graphique du curseur
     spos = xpos + swidth/2 - sheight/2;
     newspos = spos;
+    spos2 = xpos + swidth - sheight;
+    newspos2 = spos2;
+    
     sposMin = xpos;
     sposMax = xpos + swidth - sheight;
     loose = l;
   }
 
   void update() {
-    if (overEvent()) {
-      over = true;
-    } else {
-      over = false;
-    }
-    if (mousePressed && over) {
-      locked = true;
-    }
-    if (!mousePressed) {
-      locked = false;
-    }
-    if (locked) {
-      /*newspos = constrain(mouseX-sheight/2, sposMin, sposMax);
-      float interval = sposMax - sposMin;
-      float tmpPos = newspos - sposMin;
-      if(tmpPos < interval) {
-        if(tmpPos < 3*interval/4) {
-          if(tmpPos < interval/2) {
-            if(tmpPos < interval/4) {
-              tmpPos = 0;
-            } else {
-              tmpPos = interval/4;
-            }
-          } else {
-            tmpPos = interval/2;
-          }
-        } else {
-          tmpPos = 3*interval/4;
-        }
-      } else {
-        tmpPos = interval;
+    if (mousePressed) {
+      if(overEvent() == 1) {
+        newspos = constrain(mouseX-sheight/2, sposMin, sposMax);
+      } else if(overEvent() == 2) {
+        newspos2 = constrain(mouseX-sheight/2, sposMin, sposMax);
       }
-      newspos = tmpPos + sposMin;*/
-      newspos = constrain(mouseX-sheight/2, sposMin, sposMax);
     }
     if (abs(newspos - spos) > 1) {
       spos = spos + (newspos-spos)/loose;
+    }
+    if (abs(newspos2 - spos2) > 1) {
+      spos2 = spos2 + (newspos2-spos2)/loose;
     }
   }
 
@@ -76,13 +54,16 @@ class Scrollbar {
     return min(max(val, minv), maxv);
   }
 
-  boolean overEvent() {
-    if (mouseX > xpos && mouseX < xpos+swidth &&
+  int overEvent() {
+    if(mouseX > 0 && mouseX <= spos+sheight &&
        mouseY > ypos && mouseY < ypos+sheight) {
-      return true;
-    } else {
-      return false;
+      return 1;
+    } else if(mouseX > spos+sheight && mouseX < xpos+swidth &&
+       mouseY > ypos && mouseY < ypos+sheight) {
+      return 2;
     }
+    
+    return 0;
   }
 
   void display() {
@@ -95,6 +76,7 @@ class Scrollbar {
       fill(102, 102, 102);
     }
     rect(spos, ypos, sheight, sheight);
+    rect(spos2, ypos, sheight, sheight);
   }
 
   float getPos() {
@@ -102,5 +84,12 @@ class Scrollbar {
     // 0 and the total width of the scrollbar
     //return spos * ratio;
     return spos;
+  }
+  
+  float getPos2() {
+    // Convert spos to be values between
+    // 0 and the total width of the scrollbar
+    //return spos * ratio;
+    return spos2;
   }
 }
