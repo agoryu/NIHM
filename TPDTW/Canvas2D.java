@@ -70,10 +70,10 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 			final DTW dtw = new DTW(RStroke, TStroke);
 			Matrix m = dtw.calcM();
 			int size = Math.max(RStroke.size(), RStroke.size());
-			g.setColor(Color.cyan);
+			g.setColor(Color.magenta);
 			
 			Couple c = m.couple[dtw.n-1][dtw.m-1];
-			for(int i=size; i>=0; i--) {
+			while(c.x > 0 && c.y > 0) {
 				g.drawLine(TStroke.elementAt(c.x).x, TStroke.elementAt(c.x).y,
 						RStroke.elementAt(c.y).x, RStroke.elementAt(c.y).y);
 				c = m.couple[c.x][c.y];
