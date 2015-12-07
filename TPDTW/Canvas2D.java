@@ -16,6 +16,11 @@ import java.util.Vector;
 
 
 public class Canvas2D extends Canvas implements MouseMotionListener, MouseListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	// Stroke of reference
 	private Vector<Point> RStroke;
 	
@@ -37,8 +42,8 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 	
 	
 	public void paint (Graphics g){ 
-		g.drawString("Drag avec le bouton gauche ou droit de la souris + Shift : crŽation d'une courbe de rŽfŽrence",10,15); 
-		g.drawString("Drag avec le bouton gauche ou droit de la souris : crŽation d'une courbe de test",10,30); 
+		g.drawString("Drag avec le bouton gauche ou droit de la souris + Shift : crï¿½ation d'une courbe de rï¿½fï¿½rence",10,15); 
+		g.drawString("Drag avec le bouton gauche ou droit de la souris : crï¿½ation d'une courbe de test",10,30); 
 		int r = 5;  
 		
 		if (!RStroke.isEmpty()) {
@@ -59,6 +64,20 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 				g.drawArc(TStroke.elementAt(i-1).x - r, TStroke.elementAt(i-1).y - r, 2*r, 2*r, 0, 360);
 			}
 			g.drawArc(TStroke.elementAt(TStroke.size()-1).x - r, TStroke.elementAt(TStroke.size()-1).y - r, 2*r, 2*r, 0, 360);
+		}
+		
+		if(RStroke.size() > 1 && TStroke.size() > 1) {
+			final DTW dtw = new DTW(RStroke, TStroke);
+			Matrix m = dtw.calcM();
+			int size = Math.max(RStroke.size(), RStroke.size());
+			g.setColor(Color.cyan);
+			
+			Couple c = m.couple[dtw.n-1][dtw.m-1];
+			for(int i=size; i>=0; i--) {
+				g.drawLine(TStroke.elementAt(c.x).x, TStroke.elementAt(c.x).y,
+						RStroke.elementAt(c.y).x, RStroke.elementAt(c.y).y);
+				c = m.couple[c.x][c.y];
+			}
 		}
 				
 	}
