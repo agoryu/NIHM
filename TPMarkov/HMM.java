@@ -255,8 +255,43 @@ public class HMM {
 	 * @return
 	 */	
 	
-	protected Vector<Point> resample(Vector<PointData> pts, int deltaTms) {
-		Vector<Point> res = new Vector<Point>();
+	protected Vector<Point> resample(final Vector<PointData> pts, final int deltaTms) {
+		final Vector<Point> res = new Vector<Point>();
+		
+		final int size = pts.size();
+		final int t0 = (int) pts.firstElement().getTimeStamp();
+		final int totalTime = (int) pts.lastElement().getTimeStamp();
+		
+		System.out.println(t0);
+		System.out.println(totalTime);
+		
+		int index = 0;
+		int stepTime = t0;
+		
+		res.add(pts.get(0).getPoint());
+		
+		//boucle jusqu au temps du dernier point
+		while(stepTime < totalTime) {
+			
+			stepTime += deltaTms;
+			
+			//recherche du point proche du prochain pas de temps
+			while(index < size && pts.get(index).getTimeStamp() < stepTime)
+				index++;
+			
+			//recuperation des points
+			final PointData p1 = pts.get(index - 1);
+			final PointData p2 = pts.get(index);
+			
+			//interpolation du point
+			final double ratio = (stepTime - p1.getTimeStamp()) / (stepTime - p2.getTimeStamp());
+			final double newX = p1.getX() + (p2.getX() - p1.getX()) * ratio;
+			final double newY = p1.getY() + (p2.getY() - p1.getY()) * ratio;
+			
+			//ajout du point
+			res.add(new PointData(newX, newY, 0).getPoint());
+			
+		}
 		
 		return res;
 	}

@@ -3,12 +3,13 @@
  */
 
 import java.awt.Point;
-import java.util.Vector;
-import java.io.*;
-import org.jdom.*;
-import org.jdom.input.*;
-import java.util.List;
+import java.io.File;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 
 
 public class TemplateManager

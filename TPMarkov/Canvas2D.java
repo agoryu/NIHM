@@ -16,6 +16,11 @@ import java.util.Vector;
 
 
 public class Canvas2D extends Canvas implements MouseMotionListener, MouseListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	// Stroke to test
 	private Vector<PointData> TStroke;
 	
@@ -43,7 +48,7 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 	
 	
 	public void paint (Graphics g){ 
-		g.drawString("Drag avec le bouton gauche ou droit de la souris : crŽation d'une courbe de test",10,15); 
+		g.drawString("Drag avec le bouton gauche ou droit de la souris : crï¿½ation d'une courbe de test",10,15); 
 		int r = 5;  
 		
 		// Display the stroke
