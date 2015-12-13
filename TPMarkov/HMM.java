@@ -43,7 +43,7 @@ public class HMM {
 		classMap = new HashMap<String, GestureClass>();
 		templateManager = new TemplateManager("gestures.xml");
 		gesturesProbabilities = new Vector<GestureProbability>();
-		//Training();
+		Training();
 	}
 	
 	/**
@@ -203,9 +203,21 @@ public class HMM {
 	 * Compute features 
 	 */
 	
-	public ArrayList<Double> computeFeatures(Vector<Point> points) {
+	public ArrayList<Double> computeFeatures(final Vector<Point> points) {
 		
-		return null;
+		final ArrayList<Double> res = new ArrayList<Double>();
+		final int SIZE = points.size();
+		
+		for(int i=1; i<SIZE; i++) {
+			final Point p1 = points.get(i-1);
+			final Point p2 = points.get(i);
+			final double x = (p2.x - p1.x);
+			final double y = (p2.y - p1.y);
+			
+			res.add(Math.atan2(x, y));
+			
+		}
+		return res;
 	}
 	
 

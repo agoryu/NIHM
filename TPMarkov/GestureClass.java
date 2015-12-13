@@ -9,6 +9,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import be.ac.ulg.montefiore.run.jahmm.ForwardBackwardCalculator;
 import be.ac.ulg.montefiore.run.jahmm.Hmm;
 import be.ac.ulg.montefiore.run.jahmm.ObservationInteger;
 import be.ac.ulg.montefiore.run.jahmm.ObservationReal;
@@ -119,13 +120,16 @@ public class GestureClass {
 	}		
 	
 	
-	public double computeScore(ArrayList<Double> featuresRawPoints) {
+	public double computeScore(final ArrayList<Double> featuresRawPoints) {
 		double res = 0;
 		
-		ArrayList<ObservationInteger> obs = new ArrayList<ObservationInteger>();
-		for (Double i : featuresRawPoints) {
+		final ArrayList<ObservationInteger> obs = new ArrayList<ObservationInteger>();
+		for (final Double i : featuresRawPoints) {
 			obs.add(new ObservationInteger(i.intValue()));
 		}
+		
+		//final ForwardBackwardCalculator fbc = new ForwardBackwardCalculator(obs, hmm);
+		//res = fbc.probability();
 		
 		return res;
 	}	
