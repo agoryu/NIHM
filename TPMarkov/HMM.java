@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 
 public class HMM {
@@ -203,9 +204,21 @@ public class HMM {
 	 * Compute features 
 	 */
 	
-	public ArrayList<Double> computeFeatures(Vector<Point> points) {
+	public ArrayList<Double> computeFeatures(final Vector<Point> points) {
 		
-		return null;
+		//final Map<String, Double> res = new HashMap<String, Double>();
+		final ArrayList<Double> res = new ArrayList<Double>();
+		
+		final int size = points.size();
+		for(int i=1; i<size; i++) {
+			final Point p1 = points.get(i - 1);
+			final Point p2 = points.get(i);
+			
+			double angle = Math.atan2(p2.getY() - p1.getY(), p2.getX() - p1.getX());
+			res.add(angle);
+		}
+		
+		return res;
 	}
 	
 
