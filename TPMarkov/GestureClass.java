@@ -44,11 +44,16 @@ public class GestureClass {
 	}
 
 	public void computeKmeansLearner() {
+		//liste d'observation pour chaque schema
 		obsVectors = new ArrayList<ArrayList<ObservationInteger>>();
 		
+		//pour chaque shema
 		for (int i=0; i<examples.size(); i++) {
+			//creation d'une liste d'observation
 			ArrayList<ObservationInteger> obs = new ArrayList<ObservationInteger>();
+			//recuperation des observations pour l exemple courant
 			Vector<Double> f = examples.get(i).getFeaturesVector();
+			//ajout des observation exemple dans la liste d'observation cree
 			for (int j=0; j<f.size(); j++) {
 				obs.add(new ObservationInteger(f.get(j).intValue()));
 			}
@@ -56,10 +61,11 @@ public class GestureClass {
 		}
 		
 		//printObservationsSequences2(obsVectors);
+		//System.out.println(obsVectors.size());
 				
-		//kmeanslearner = new KMeansLearner(2, new OpdfIntegerFactory(19), obsVectors);
+		//kmeanslearner = new KMeansLearner<ObservationInteger>(2, new OpdfIntegerFactory(19), obsVectors);
 		//hmm = kmeanslearner.learn();
-		hmm = trainHMM(obsVectors);
+		//hmm = trainHMM(obsVectors);
 	}		
 	
 	public Hmm<ObservationInteger> trainHMM(ArrayList<ArrayList<ObservationInteger>> 
@@ -124,12 +130,14 @@ public class GestureClass {
 		double res = 0;
 		
 		final ArrayList<ObservationInteger> obs = new ArrayList<ObservationInteger>();
+		
 		for (final Double i : featuresRawPoints) {
 			obs.add(new ObservationInteger(i.intValue()));
 		}
 		
-		//final ForwardBackwardCalculator fbc = new ForwardBackwardCalculator(obs, hmm);
-		//res = fbc.probability();
+		//System.out.println(hmm);
+		final ForwardBackwardCalculator fbc = new ForwardBackwardCalculator(obs, hmm);
+		res = fbc.probability();
 		
 		return res;
 	}	
