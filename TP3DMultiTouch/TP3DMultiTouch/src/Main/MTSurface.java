@@ -79,7 +79,9 @@ public class MTSurface extends GLJPanel implements GLEventListener, MouseMotionL
 	int buffSize = 6;
 	IntBuffer pickingBuffer;
 	int mouse_x,mouse_y;
-	GLUT glut = new GLUT(); 
+	GLUT glut = new GLUT();
+	int oldX = 0;
+	int oldY = 0;
 	
 	
 	public MTSurface(GLCapabilities caps) {
@@ -183,10 +185,21 @@ public class MTSurface extends GLJPanel implements GLEventListener, MouseMotionL
 			gl.glMatrixMode(GL2.GL_MODELVIEW);
 			gl.glLoadIdentity();
 			gl.glPushName(0);
-			drawScene(gl);
+			//drawScene(gl);
 
 			hits = gl.glRenderMode(GL2.GL_RENDER);
-			processHits(hits, selectBuffer);		
+			//processHits(hits, selectBuffer);
+			System.out.println(px);
+			if(hits > 0) {
+				int offsetX = 2 * ((oldX - px)/1000) - 1;
+				int offsetY = 2 * ((oldY - py)/1000) - 1;
+				
+				gl.glTranslated(offsetX, offsetY, -2);
+				oldX = px;
+				oldY = py;
+		    }
+			drawScene(gl);
+			
 		}		
 
 		myGlassPane.repaint();			
@@ -266,7 +279,7 @@ public class MTSurface extends GLJPanel implements GLEventListener, MouseMotionL
     }
 
 	public void mouseDragged(MouseEvent e) {
-
+		
 	}
 
 	public void mouseMoved(MouseEvent e) {
