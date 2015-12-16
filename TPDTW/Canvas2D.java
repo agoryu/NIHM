@@ -68,14 +68,26 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 		
 		if(RStroke.size() > 1 && TStroke.size() > 1) {
 			final DTW dtw = new DTW(RStroke, TStroke);
-			Matrix m = dtw.calcM();
-			int size = Math.max(RStroke.size(), RStroke.size());
+			final Matrix m = dtw.calcM();
 			g.setColor(Color.magenta);
 			
+			if(m == null) {
+				System.out.println("Erreur dans le calcul de la matrice");
+				return;
+			}
+			
 			Couple c = m.couple[dtw.n-1][dtw.m-1];
+			
 			while(c.x > 0 && c.y > 0) {
-				g.drawLine(TStroke.elementAt(c.x).x, TStroke.elementAt(c.x).y,
-						RStroke.elementAt(c.y).x, RStroke.elementAt(c.y).y);
+				
+				final Point pT = TStroke.elementAt(c.y);
+				final Point pR = RStroke.elementAt(c.x);
+				
+				if(pT == null || pR == null)
+					break;
+				
+				g.drawLine(pT.x, pT.y, pR.x, pR.y);
+				
 				c = m.couple[c.x][c.y];
 			}
 		}
