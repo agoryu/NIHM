@@ -35,16 +35,15 @@ public class DTW {
 		dtw.clear();
 		
 		dtw.items[0][0] = 0;
-		//dtw.couple[0][0] = new Couple(0, 0);
 		
 		//initialisation premiere ligne
 		for(int i=1; i<n; i++) {
-			dtw.items[i][1] = dtw.items[i-1][1] + distance(i, 1);
+			dtw.items[i][0] = dtw.items[i-1][0] + distance(i, 0);
 		}
 		
 		//initialisation premiere colonne
 		for(int j=1; j<m; j++) {
-			dtw.items[1][j] = dtw.items[1][j-1] + distance(1, j);
+			dtw.items[0][j] = dtw.items[0][j-1] + distance(0, j);
 		}
 		
 		//calcul dwt
@@ -59,8 +58,10 @@ public class DTW {
 					dtw.couple[i][j] = new Couple(i-1, j);
 				else if(min == dtw.items[i][j-1])
 					dtw.couple[i][j] = new Couple(i, j-1);
-				else 
+				else if(min == dtw.items[i-1][j-1])
 					dtw.couple[i][j] = new Couple(i-1, j-1);
+				else 
+					System.out.println("Erreur pas de correspondance");
 				
 				//calcul de dwt a la position i j
 				dtw.items[i][j] = distance(i,j) + min;
