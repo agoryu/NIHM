@@ -5,6 +5,7 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
 import java.util.Vector;
 
 /**
@@ -77,6 +78,8 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 			}
 			
 			Couple c = m.couple[dtw.n-1][dtw.m-1];
+			final ArrayList<Point> gm=new ArrayList<Point>();
+			final ArrayList<Point> T=new ArrayList<Point>();
 			
 			while(c.x > 0 && c.y > 0) {
 				
@@ -85,6 +88,9 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 				
 				if(pT == null || pR == null)
 					break;
+				
+				gm.add(pR);
+				T.add(pT);
 				
 				g.drawLine(pT.x, pT.y, pR.x, pR.y);
 				
