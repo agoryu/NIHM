@@ -60,12 +60,12 @@ public class GestureClass {
 			obsVectors.add(obs);
 		}
 		
-		//printObservationsSequences2(obsVectors);
+		printObservationsSequences2(obsVectors);
 		//System.out.println(obsVectors.size());
 				
 		//kmeanslearner = new KMeansLearner<ObservationInteger>(2, new OpdfIntegerFactory(19), obsVectors);
 		//hmm = kmeanslearner.learn();
-		//hmm = trainHMM(obsVectors);
+		hmm = trainHMM(obsVectors);
 	}		
 	
 	public Hmm<ObservationInteger> trainHMM(ArrayList<ArrayList<ObservationInteger>> 

@@ -8,12 +8,14 @@
 import java.awt.Point;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Vector;
+
+import be.ac.ulg.montefiore.run.jahmm.draw.GenericHmmDrawerDot;
 
 public class HMM {
 	private Vector<PointData> rawSrcPoints;
@@ -75,7 +77,9 @@ public class HMM {
 		for (i=0; i<gestureClasses.size();i++) {
 			String className = gestureClasses.get(i);
 			Vector<Template> classExamples = new Vector<Template>();
-			for (int j=0; j<templates.size();j++) if (templates.get(j).getName().compareTo(className) == 0) classExamples.add(templates.get(j));
+			for (int j=0; j<templates.size();j++) 
+				if (templates.get(j).getName().compareTo(className) == 0) 
+					classExamples.add(templates.get(j));
 			GestureClass gestureClass = new GestureClass(classExamples, className);
 			classMap.put(className, gestureClass);
 		}
