@@ -60,7 +60,7 @@ public class GestureClass {
 			obsVectors.add(obs);
 		}
 		
-		printObservationsSequences2(obsVectors);
+		//printObservationsSequences2(obsVectors);
 		//System.out.println(obsVectors.size());
 				
 		//kmeanslearner = new KMeansLearner<ObservationInteger>(2, new OpdfIntegerFactory(19), obsVectors);

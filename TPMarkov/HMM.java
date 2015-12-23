@@ -219,7 +219,7 @@ public class HMM {
 			final double x = (p2.x - p1.x);
 			final double y = (p2.y - p1.y);
 
-			res.add(Math.atan2(x, y));
+			res.add((double)Math.round(Math.abs(Math.toDegrees(Math.atan2(x, y)))/10));
 
 		}
 		return res;
