@@ -8,6 +8,9 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import lx.interaction.dollar.*;
+import lx.interaction.touch.*;
+
 /**
  * Canvas2D.java
  *
@@ -16,7 +19,7 @@ import java.util.Vector;
  */
 
 
-public class Canvas2D extends Canvas implements MouseMotionListener, MouseListener {
+public class Canvas2D extends Canvas implements MouseMotionListener, MouseListener, DollarListener {
 	/**
 	 * 
 	 */
@@ -29,6 +32,12 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 	private Vector<Point> TStroke;
 	
 	private int shiftModifier = 17;
+	
+	Dollar dollar = new Dollar(Dollar.GESTURES_DEFAULT);
+	String name = "";
+	double score = 0;
+	boolean ok = false;
+	int state;
 
 	
 	Canvas2D () {
@@ -38,6 +47,9 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		
+		dollar.setListener(this);
+		dollar.setActive(true);
+		
 		setBackground(new Color(255,255,255));
 	}
 	
@@ -45,6 +57,8 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 	public void paint (Graphics g){ 
 		g.drawString("Drag avec le bouton gauche ou droit de la souris + Shift : cr�ation d'une courbe de r�f�rence",10,15); 
 		g.drawString("Drag avec le bouton gauche ou droit de la souris : cr�ation d'une courbe de test",10,30); 
+		if (ok)
+			g.drawString("gesture: " + name + " (" + score + ")", 10, 60);	
 		int r = 5;  
 		
 		if (!RStroke.isEmpty()) {
@@ -78,21 +92,23 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 			}
 			
 			Couple c = m.couple[dtw.n-1][dtw.m-1];
-			final ArrayList<Point> gm=new ArrayList<Point>();
-			final ArrayList<Point> T=new ArrayList<Point>();
+			boolean beginForm = false;
 			
 			while(c.x > 0 && c.y > 0) {
 				
 				final Point pT = TStroke.elementAt(c.y);
 				final Point pR = RStroke.elementAt(c.x);
 				
+				Couple cNext = m.couple[c.x][c.y];
+				
 				if(pT == null || pR == null)
 					break;
 				
-				gm.add(pR);
-				T.add(pT);
+				if(TStroke.elementAt(cNext.y) != pT && RStroke.elementAt(cNext.x) != pR)
+					beginForm = true;
 				
-				g.drawLine(pT.x, pT.y, pR.x, pR.y);
+				if(beginForm)
+					g.drawLine(pT.x, pT.y, pR.x, pR.y);
 				
 				c = m.couple[c.x][c.y];
 			}
@@ -101,7 +117,7 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 	}
 
 	public void mouseMoved(MouseEvent e) {
-
+		state = 0;
 	}
 
 	public void mouseDragged(MouseEvent e) {
@@ -109,6 +125,9 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 			RStroke.add(e.getPoint());
 		else
 			TStroke.add(e.getPoint());
+		
+		state = 2;
+		dollar.pointerDragged(e.getX(), e.getY());
 		repaint();
 	}	
 	
@@ -129,9 +148,24 @@ public class Canvas2D extends Canvas implements MouseMotionListener, MouseListen
 			RStroke.clear();
 		else
 			TStroke.clear();
+		
+		state = 1;
+		dollar.pointerPressed(e.getX(), e.getY());
 	}
 
 	public void mouseReleased(MouseEvent e) {
+		state = 0;
+		dollar.pointerReleased(e.getX(), e.getY());		
+	}
 
+
+	@Override
+	public void dollarDetected(Dollar dollar) {
+		score = dollar.getScore();
+		name = dollar.getName();
+		
+		ok = score > 0.80;
+		repaint();
+		
 	}  
 }
