@@ -80,6 +80,8 @@ public class MTSurface extends GLJPanel implements GLEventListener, MouseMotionL
 	IntBuffer pickingBuffer;
 	int mouse_x,mouse_y;
 	GLUT glut = new GLUT(); 
+	float posX = 0f, posY = 0f, posZ = -2f;
+	float rotY = 0f, rotZ = 0f;
 	
 	
 	public MTSurface(GLCapabilities caps) {
@@ -121,7 +123,9 @@ public class MTSurface extends GLJPanel implements GLEventListener, MouseMotionL
 
 	
 	public void drawScene(GL2 gl) {
-		gl.glTranslatef(0, 0, -2);
+		gl.glTranslatef(posX, posY, posZ);
+		gl.glRotatef(rotY, 0, 1, 0);
+		gl.glRotatef(rotZ, 0, 0, 1);
 		float amb[] = {0.24725f,	0.1995f,	0.0745f, 1f};
 		gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, amb, 0);
 
@@ -159,8 +163,10 @@ public class MTSurface extends GLJPanel implements GLEventListener, MouseMotionL
 		gl.glLoadIdentity();             // Set up modelview transform. 
 		drawScene(gl);
 		
+		int totalHits = 0;
 		// Find objects touched
 		for (MTEventQueue.MTEventData evt: mtqueue2) {
+			
 			int px = (int)evt.p.x;
 			int py =  (int) (evt.p.y);
 			
@@ -186,7 +192,30 @@ public class MTSurface extends GLJPanel implements GLEventListener, MouseMotionL
 			drawScene(gl);
 
 			hits = gl.glRenderMode(GL2.GL_RENDER);
-			processHits(hits, selectBuffer);		
+			//processHits(hits, selectBuffer);	
+			totalHits += hits;
+			if(hits > 0) {
+				final int nbFinger = bqueue.getNbFingers();
+				
+				if(nbFinger == 1) {
+					
+					posX = (float) (px) / (float) (this.getSize().width) * 2.0f - 1.0f;
+					posY = - ((float) (py) / (float) (this.getSize().height) * 2.0f - 1.0f);
+					
+				} else if(nbFinger == 2 && totalHits == 1) {
+					
+					posZ = ((float) (-py) / (float) (1000) * 2.0f - 1.0f);
+					System.out.println("passage dans le z");
+					
+				} else if(nbFinger == 2 && totalHits == 2) {
+		        	
+					rotZ = (float) (px) / (float) (this.getSize().width) * 2.0f - 1.0f;
+					rotY = ((float) (py) / (float) (this.getSize().height) * 2.0f - 1.0f);
+					System.out.println("passage dans la rotation");
+					
+		        }
+			} 
+			System.out.println(totalHits);
 		}		
 
 		myGlassPane.repaint();			
