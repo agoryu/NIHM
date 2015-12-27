@@ -1,3 +1,4 @@
+library("gplots")
 data=read.table("data.txt", header=TRUE, sep=",")
 #Q1
 #quantile(90, c(0.1, 0.2, 0.3, 0.4, 0.5, 0.6))
